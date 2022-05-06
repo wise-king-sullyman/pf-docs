@@ -1,0 +1,103 @@
+{
+  "name": "pf-docs",
+  "version": "0.0.1",
+  "description": "Patternfly themed documentation in a browser from any repo.",
+  "author": "Red Hat",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cdcabrera/pf-docs"
+  },
+  "bugs": {
+    "url": "https://github.com/cdcabrera/pf-docs/issues"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "bin": {
+    "mock": "./bin/cli.js"
+  },
+  "scripts": {
+    "build:deps": "ncu --doctor -u --doctorInstall \"yarn\" --doctorTest \"yarn test:deps\"",
+    "release": "standard-version",
+    "start": "./bin/cli.js start",
+    "start:dev": "nodemon --watch src './bin/cli.js start'",
+    "test": "run-s -l test:lint test:ci",
+    "test:ci": "export CI=true; jest --collectCoverage --passWithNoTests",
+    "test:clearCache": "jest --clearCache",
+    "test:deps": "run-s test",
+    "test:dev": "eslint ./src; jest --watch",
+    "test:integration": "jest --roots=./tests",
+    "test:integration-dev": "jest --roots=./tests --watchAll",
+    "test:lint": "eslint ./src ./bin"
+  },
+  "jest": {
+    "roots": [
+      "src"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 50,
+        "functions": 50,
+        "lines": 50,
+        "statements": 50
+      }
+    },
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/logger/*"
+    ]
+  },
+  "standard-version": {
+    "types": [
+      {
+        "type": "feat",
+        "section": "Features"
+      },
+      {
+        "type": "fix",
+        "section": "Bug Fixes"
+      },
+      {
+        "type": "refactor",
+        "section": "Code Refactoring"
+      },
+      {
+        "type": "perf",
+        "section": "Performance Improvements"
+      },
+      {
+        "type": "build",
+        "section": "Build Updates"
+      },
+      {
+        "type": "chore",
+        "section": "Maintenance"
+      }
+    ]
+  },
+  "dependencies": {
+    "commander": "^9.2.0"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.17.0",
+    "eslint": "^8.14.0",
+    "eslint-config-esnext": "^4.1.0",
+    "eslint-config-node": "^4.1.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-babel": "^5.3.1",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jest": "^26.1.5",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^28.0.3",
+    "nodemon": "^2.0.16",
+    "npm-check-updates": "^12.5.11",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.6.2",
+    "standard-version": "^9.3.2"
+  },
+  "resolutions": {
+    "**/eslint": "6.8.0"
+  }
+}
