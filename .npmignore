@@ -3,6 +3,7 @@
 !bin/**/*.js
 !data/**/*.js
 !src/**/*.js
+src/**/*__tests__
 src/**/*test.js
 src/**/*.archive
 !LICENSE

@@ -2,6 +2,7 @@
 node_modules
 package-lock.json
 .yarn-integrity
+.cache
 
 # coverage
 lib-cov
@@ -21,3 +22,4 @@ api-debug*
 .env
 .docs
 .fixtures
+pf-docs
