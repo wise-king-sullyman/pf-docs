@@ -15,7 +15,7 @@ const watchMarkdown = (patterns, { routes, outputBase } = {}) => {
   let updatedTsDocs = {};
 
   const setWatch = (arr, callback) =>
-    arr.forEach(({ glob, ignore: ignored = [], ...rest } = {}) => {
+    arr.forEach(({ glob, ignored = [], ...rest } = {}) => {
       const watcher = chokidar.watch(glob, { ignored, ignoreInitial: true });
       watcher.on('add', file => callback(file, rest));
       watcher.on('change', file => callback(file, rest));

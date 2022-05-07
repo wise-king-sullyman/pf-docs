@@ -2,14 +2,14 @@ module.exports = {
   props: [
     {
       glob: '**/*.md',
-      ignore: []
+      ignored: []
     }
   ],
   markdown: [
     {
       glob: '**/*.md',
       source: '',
-      ignore: []
+      ignored: []
     }
   ]
 };
