@@ -19,7 +19,7 @@ const { writeIndexFile } = require('./writeIndexFile');
  * @param {string} source
  * @param {string} buildMode
  * @param {object} tsDocs
- * @param {string} outputBase
+ * @param {string} outputDir
  * @param {object} routes
  * @returns {{outPath, pageData: {}, jsx}}
  */
@@ -28,7 +28,7 @@ const toReactComponent = ({
   source,
   buildMode,
   tsDocs,
-  outputBase,
+  outputDir,
   routes
 } = {}) => {
   // vfiles allow for nicer error messages and have native `unified` support
@@ -62,7 +62,7 @@ const toReactComponent = ({
       }
       source = frontmatter.source || source;
       const slug = makeSlug(source, frontmatter.section, frontmatter.id);
-      outPath = path.join(outputBase, `${slug}.js`);
+      outPath = path.join(outputDir, `${slug}.js`);
 
       let sourceRepo = 'patternfly-org';
       if (source.includes('html')) {
@@ -103,7 +103,7 @@ const toReactComponent = ({
         pageData.section = 'components';
         pageData.source = `${source}-demos`;
         pageData.slug = makeSlug(pageData.source, pageData.section, pageData.id);
-        outPath = path.join(outputBase, `${pageData.slug}.js`);
+        outPath = path.join(outputDir, `${pageData.slug}.js`);
       }
       if (frontmatter.title) {
         pageData.title = frontmatter.title;
@@ -172,9 +172,9 @@ const toReactComponent = ({
               routes,
               source,
               tsDocs,
-              outputBase
+              outputDir
             });
-            writeIndexFile({ routes: updated, outputBase });
+            writeIndexFile({ routes: updated, outputDir });
           });
         }
       }

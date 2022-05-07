@@ -2,7 +2,6 @@ const chokidar = require('chokidar');
 const { sourcePropsFile } = require('./sourcePropsFile');
 const { sourceMarkdownFile } = require('./sourceMarkdownFile');
 const { writeIndexFile } = require('./writeIndexFile');
-const { _PF_DOCS_CONTEXT_PWD } = global;
 
 /**
  * Setup file watch
@@ -10,9 +9,9 @@ const { _PF_DOCS_CONTEXT_PWD } = global;
  * @param {object|string} patterns
  * @param {object} options
  * @param {object} options.routes
- * @param {string} options.outputBase
+ * @param {string} options.outputDir
  */
-const watchMarkdown = (patterns, { routes = {}, outputBase = _PF_DOCS_CONTEXT_PWD } = {}) => {
+const watchMarkdown = (patterns, { routes = {}, outputDir } = {}) => {
   let updatedTsDocs = {};
 
   const setWatch = (arr, callback) =>
@@ -30,8 +29,8 @@ const watchMarkdown = (patterns, { routes = {}, outputBase = _PF_DOCS_CONTEXT_PW
 
   if (typeof patterns === 'string') {
     setWatch([{ glob: patterns }], file => {
-      const updated = sourceMarkdownFile({ file, routes, tsDocs: updatedTsDocs, outputBase });
-      writeIndexFile({ routes: updated, outputBase });
+      const updated = sourceMarkdownFile({ file, routes, tsDocs: updatedTsDocs, outputDir });
+      writeIndexFile({ routes: updated, outputDir });
     });
   }
 
@@ -42,9 +41,9 @@ const watchMarkdown = (patterns, { routes = {}, outputBase = _PF_DOCS_CONTEXT_PW
         routes,
         source,
         tsDocs: updatedTsDocs,
-        outputBase
+        outputDir
       });
-      writeIndexFile({ routes: updated, outputBase });
+      writeIndexFile({ routes: updated, outputDir });
     });
   }
 };
@@ -60,10 +59,10 @@ module.exports = {
     sync(glob, { ignore }).forEach(file => sourceMDFile(file, source, buildMode));
   },
   */
-  sourcePropsFile,
+  // sourcePropsFile,
   // sourceProps,
-  sourceMarkdownFile,
+  // sourceMarkdownFile,
   // sourceMarkdown,
-  writeIndexFile,
+  // writeIndexFile,
   watchMarkdown
 };

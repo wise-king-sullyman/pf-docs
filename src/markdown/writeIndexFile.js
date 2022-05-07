@@ -1,5 +1,4 @@
 const path = require('path');
-
 const fs = require('fs-extra');
 
 /**
@@ -7,10 +6,10 @@ const fs = require('fs-extra');
  *
  * @param {object} params
  * @param {object} params.routes
- * @param {string} params.outputBase
+ * @param {string} params.outputDir
  * @param {string} params.outputFile
  */
-const writeIndexFile = ({ routes, outputBase, outputFile = 'index.js' } = {}) => {
+const writeIndexFile = ({ routes, outputDir, outputFile = 'index.js' } = {}) => {
   const stringifyRoute = ([route, pageData]) =>
     `'${route}': {\n    ${Object.entries(pageData)
       .map(([key, val]) => `${key}: ${JSON.stringify(val)}`)
@@ -23,7 +22,7 @@ const writeIndexFile = ({ routes, outputBase, outputFile = 'index.js' } = {}) =>
     .map(stringifyRoute)
     .join(',\n  ')}\n};`;
 
-  fs.outputFileSync(path.join(outputBase, outputFile), indexContent);
+  fs.outputFileSync(path.join(outputDir, outputFile), indexContent);
   // return exitCode;
 };
 

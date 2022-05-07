@@ -9,7 +9,7 @@ const { toReactComponent } = require('./toReactComponent');
  * @param {object} params
  * @param {string} params.buildMode
  * @param {string} params.file
- * @param {string} params.outputBase
+ * @param {string} params.outputDir
  * @param {object} params.routes
  * @param {(react|react-composable|react-legacy|react-demos|html|html-demos|design-guidelines|accessibility)} params.source
  * @param {object} params.tsDocs
@@ -18,9 +18,9 @@ const { toReactComponent } = require('./toReactComponent');
 const sourceMarkdownFile = ({
   buildMode = 'start',
   file,
-  outputBase,
+  outputDir,
   routes,
-  source = 'react',
+  source = '',
   tsDocs
 } = {}) => {
   let updatedRoutes = _cloneDeep(routes);
@@ -33,7 +33,7 @@ const sourceMarkdownFile = ({
     file,
     source,
     buildMode,
-    outputBase,
+    outputDir,
     tsDocs
   });
 

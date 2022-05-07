@@ -27,11 +27,19 @@ const _PF_DOCS_PACKAGE_PWD = (global._PF_DOCS_PACKAGE_PWD = path.join(__dirname,
  */
 const _PF_DOCS_PORT_OPT = (global._PF_DOCS_PORT_OPT = 8003);
 
+/**
+ * Core options, applicable to all commands.
+ */
 program
-  .option('-c, --config [path]', 'set server config path')
-  .option('-d, --cssconfig [path]', 'set css import file path')
-  .option('-r, --routes [path]', 'set routes file path')
-  .option('-s, --source [path]', 'set markdown import path');
+  .option('-c, --config [path]', 'set a server config file path')
+  .option('-d, --css [path]', 'set a css file path, with css imports')
+  // .option('-r, --routes [path]', 'set a routes file path')
+  .option('-s, --source [path]', 'set a markdown file path, with props and markdown globs')
+  .option(
+    '-o, --outputDir <path>',
+    'default directory where pf-docs places all output',
+    path.join(_PF_DOCS_CONTEXT_PWD, '/pf-docs')
+  );
 
 /**
  * Start command. Start a local server with PF themed documentation.
