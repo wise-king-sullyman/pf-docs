@@ -36,9 +36,11 @@ program
   .description('generates source files, and runs webpack-dev-server')
   .action(localOptions => {
     const options = { ...program.opts(), ...localOptions };
-    const { start } = require('../src/start');
-    console.log();
-    start(options);
+    const { commandGenerate } = require('../src/command.generate');
+    const { commandStart } = require('../src/command.start');
+
+    commandGenerate(options);
+    commandStart(options);
   });
 
 /**
