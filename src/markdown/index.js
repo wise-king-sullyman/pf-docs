@@ -8,15 +8,16 @@ const { writeIndexFile } = require('./writeIndexFile');
  *
  * @param {object|string} patterns
  * @param {object} options
+ * @param {boolean} options.ignoreInitial
  * @param {object} options.routes
  * @param {string} options.outputDir
  */
-const watchMarkdown = (patterns, { routes = {}, outputDir } = {}) => {
+const watchMarkdown = (patterns, { routes = {}, outputDir, ignoreInitial = true } = {}) => {
   let updatedTsDocs = {};
 
   const setWatch = (arr, callback) =>
     arr.forEach(({ glob, ignored = [], ...rest } = {}) => {
-      const watcher = chokidar.watch(glob, { ignored, ignoreInitial: true });
+      const watcher = chokidar.watch(glob, { ignored, ignoreInitial });
       watcher.on('add', file => callback(file, rest));
       watcher.on('change', file => callback(file, rest));
     });
