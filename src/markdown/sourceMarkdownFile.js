@@ -11,7 +11,7 @@ const { toReactComponent } = require('./toReactComponent');
  * @param {string} params.file
  * @param {string} params.outputBase
  * @param {object} params.routes
- * @param {string} params.source
+ * @param {(react|react-composable|react-legacy|react-demos|html|html-demos|design-guidelines|accessibility)} params.source
  * @param {object} params.tsDocs
  * @returns {{}}
  */

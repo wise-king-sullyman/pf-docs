@@ -2,6 +2,7 @@ const chokidar = require('chokidar');
 const { sourcePropsFile } = require('./sourcePropsFile');
 const { sourceMarkdownFile } = require('./sourceMarkdownFile');
 const { writeIndexFile } = require('./writeIndexFile');
+const { _PF_DOCS_CONTEXT_PWD } = global;
 
 /**
  * Setup file watch
@@ -11,7 +12,7 @@ const { writeIndexFile } = require('./writeIndexFile');
  * @param {object} options.routes
  * @param {string} options.outputBase
  */
-const watchMarkdown = (patterns, { routes, outputBase } = {}) => {
+const watchMarkdown = (patterns, { routes = {}, outputBase = _PF_DOCS_CONTEXT_PWD } = {}) => {
   let updatedTsDocs = {};
 
   const setWatch = (arr, callback) =>

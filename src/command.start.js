@@ -1,7 +1,7 @@
-const { watchMD } = require('./markdown');
+const { watchMarkdown } = require('./markdown');
 
-const commandStart = () => {
-  watchMD();
+const commandStart = options => {
+  watchMarkdown((options.source && require(options.source)) || options.match);
 };
 
 module.exports = {
