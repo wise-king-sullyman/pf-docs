@@ -3,7 +3,6 @@
 const { program } = require('commander');
 const path = require('path');
 const { emptyDirSync } = require('fs-extra');
-const {commandWatch} = require("../src/command.watch");
 
 /**
  * Set consumer project/repo path.
