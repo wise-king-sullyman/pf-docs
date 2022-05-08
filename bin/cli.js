@@ -62,10 +62,10 @@ program
 
     console.log(options);
 
-    const { commandGenerate } = require('../src/command.generate');
+    // const { commandGenerate } = require('../src/command.generate');
     const { commandStart } = require('../src/command.start');
-
-    commandGenerate(options);
+    //
+    // commandGenerate(options);
     commandStart(options);
   });
 

@@ -11,7 +11,7 @@ const { toReactComponent } = require('./toReactComponent');
  * @param {string} params.file
  * @param {string} params.outputDir
  * @param {object} params.routes
- * @param {(react|react-composable|react-legacy|react-demos|html|html-demos|design-guidelines|accessibility)} params.source
+ * @param {(react|react-composable|react-legacy|react-demos|html|html-demos|design-guidelines|accessibility|*)} params.source
  * @param {object} params.tsDocs
  * @returns {{}}
  */
@@ -37,8 +37,10 @@ const sourceMarkdownFile = ({
     tsDocs
   });
 
-  if (jsx) {
-    fs.outputFileSync(outPath, jsx);
+  if (pageData.slug && pageData.id) {
+    if (jsx) {
+      fs.outputFileSync(outPath, jsx);
+    }
 
     updatedRoutes[pageData.slug] = {
       id: pageData.id,

@@ -3,14 +3,15 @@ const toVfile = require('to-vfile');
 const unified = require('unified');
 const yaml = require('js-yaml');
 const visit = require('unist-util-visit');
-const chokidar = require('chokidar');
+// const chokidar = require('chokidar');
 const remove = require('unist-util-remove');
+// const vfile = require('vfile');
 const vfileReport = require('vfile-reporter');
 const { makeSlug } = require('../helpers/slugger');
 const { liveCodeTypes } = require('../helpers/liveCodeTypes');
 const { typecheck } = require('./typecheck');
-const { sourceMarkdownFile } = require('./sourceMarkdownFile');
-const { writeIndexFile } = require('./writeIndexFile');
+// const { sourceMarkdownFile } = require('./sourceMarkdownFile');
+// const { writeIndexFile } = require('./writeIndexFile');
 
 /**
  * Convert markdown towards React.
@@ -163,6 +164,7 @@ const toReactComponent = ({
     .use(require('./mdx-ast-to-mdx-hast'), {
       watchExternal(file) {
         if (buildMode === 'start') {
+          /*
           const watcher = chokidar.watch(file, { ignoreInitial: true });
           watcher.on('change', () => {
             // const updated = sourceMarkdownFile(mdFilePath, source, buildMode);
@@ -176,6 +178,7 @@ const toReactComponent = ({
             });
             writeIndexFile({ routes: updated, outputDir });
           });
+           */
         }
       }
     })
@@ -239,18 +242,8 @@ const toReactComponent = ({
       getPageData: () => pageData // For @reach/router routing
     })
     .process(vfile, (err, file) => {
-      if (err) {
-        // console.error(vfileReport(err));
-        // exitCode = 2;
-        // process.exit(2);
-        throw new Error(vfileReport(err));
-      } else {
-        // console.log(relPath, '->', path.relative(process.cwd(), outPath));
-        if (file?.messages?.length > 0) {
-          console.log(vfileReport(file));
-        }
-        jsx = file.contents;
-      }
+      jsx = file?.contents;
+      console.info(vfileReport(vfile));
     });
 
   return {

@@ -75,9 +75,7 @@ function serializeRoot(node, options) {
 
   const importStatements = groups.import
     .map(node => node.value)
-    .map(imp =>
-      imp.replace(/(['"])\./g, (_, match) => `${match}${getRelPath()}${path.posix.sep}\.`)
-    )
+    .map(imp => imp.replace(/(['"])\./g, (_, match) => `${match}${getRelPath()}${path.posix.sep}.`))
     .concat(thumbnailImports)
     .join('\n');
 
@@ -87,6 +85,7 @@ function serializeRoot(node, options) {
     .flat(1)
     .map(spec => (spec.local ? spec.local.name : null))
     .filter(Boolean);
+
   const liveContext = options.importSpecifiers
     .filter(localName => !/srcImport.*/.test(localName)) // Images in MD like [!img](./src)
     .join(',\n  ');
