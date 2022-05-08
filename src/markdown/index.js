@@ -41,6 +41,7 @@ const fileWatch = (arr, callback) =>
  * @param {boolean} options.ignoreInitial
  * @param {object} options.routes
  * @param {string} options.outputDir
+ * @returns {boolean}
  */
 const setupMarkdown = (
   patterns,
@@ -76,6 +77,8 @@ const setupMarkdown = (
       }
     );
   }
+
+  return true;
 };
 
 module.exports = {

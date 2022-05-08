@@ -28,6 +28,12 @@ const _PF_DOCS_PACKAGE_PWD = (global._PF_DOCS_PACKAGE_PWD = path.join(__dirname,
  */
 const _PF_DOCS_PORT_OPT = (global._PF_DOCS_PORT_OPT = 8003);
 
+const _PF_DOCS_GENERATE = (global._PF_DOCS_GENERATE = undefined);
+
+const _PF_DOCS_SERVE = (global._PF_DOCS_SERVE = undefined);
+
+const _PF_DOCS_WATCH = (global._PF_DOCS_WATCH = undefined);
+
 /**
  * Core options, applicable to all commands.
  */
@@ -53,9 +59,9 @@ program
  */
 program
   .command('start')
-  .option('-p, --port <port>', 'set webpack port', _PF_DOCS_PORT_OPT)
+  // .option('-p, --port <port>', 'set webpack port', _PF_DOCS_PORT_OPT)
   .description('generates components, watches files, and runs webpack-dev-server')
-  .action(localOptions => {
+  .action(async localOptions => {
     const options = { ...program.opts(), ...localOptions };
 
     if (options.source) {
@@ -69,9 +75,16 @@ program
     const { commandGenerate } = require('../src/command.generate');
     const { commandWatch } = require('../src/command.watch');
     const { commandServe } = require('../src/command.serve');
-    commandGenerate(options);
-    commandWatch(options);
+
+    global._PF_DOCS_GENERATE = await commandGenerate(options);
+    global._PF_DOCS_WATCH = await commandWatch(options);
+
     commandServe(options);
+
+    // if (_PF_DOCS_GENERATE && _PF_DOCS_WATCH) {
+    // commandServe(options);
+    // console.log('>>>>>>>>> SERVE FILES');
+    // }
   });
 
 /**
@@ -80,7 +93,7 @@ program
 program
   .command('generate')
   .description('generates components from markdown')
-  .action(localOptions => {
+  .action(async localOptions => {
     const options = { ...program.opts(), ...localOptions };
 
     if (options.source) {
@@ -92,7 +105,7 @@ program
     }
 
     const { commandGenerate } = require('../src/command.generate');
-    commandGenerate(options);
+    global._PF_DOCS_GENERATE = await commandGenerate(options);
   });
 
 /**
@@ -113,7 +126,7 @@ program
     }
 
     const { commandServe } = require('../src/command.serve');
-    commandServe(options);
+    global._PF_DOCS_SERVE = commandServe(options);
   });
 
 /**
@@ -122,7 +135,7 @@ program
 program
   .command('watch')
   .description('watches markdown files')
-  .action(localOptions => {
+  .action(async localOptions => {
     const options = { ...program.opts(), ...localOptions };
 
     if (options.source) {
@@ -134,7 +147,7 @@ program
     }
 
     const { commandWatch } = require('../src/command.watch');
-    commandWatch(options);
+    global._PF_DOCS_WATCH = await commandWatch(options);
   });
 
 /**
