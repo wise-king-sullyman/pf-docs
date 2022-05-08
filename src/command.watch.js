@@ -1,6 +1,6 @@
 const { setupMarkdown, fileWatch } = require('./markdown');
 
-const commandStart = options => {
+const commandWatch = options => {
   setupMarkdown((options.source && require(options.source)) || options.match, {
     fileHandler: fileWatch,
     outputDir: options?.outputDir
@@ -8,5 +8,5 @@ const commandStart = options => {
 };
 
 module.exports = {
-  commandStart
+  commandWatch
 };

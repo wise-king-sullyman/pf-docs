@@ -24,6 +24,8 @@
     "start:dev": "nodemon --watch bin --watch src './bin/cli.js start'",
     "cli:start": "./bin/cli.js start",
     "cli:generate": "./bin/cli.js generate",
+    "cli:serve": "./bin/cli.js serve",
+    "cli:watch": "./bin/cli.js watch",
     "test": "run-s -l test:lint test:ci",
     "test:ci": "export CI=true; jest --collectCoverage --passWithNoTests",
     "test:clearCache": "jest --clearCache",
