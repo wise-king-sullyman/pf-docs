@@ -2,6 +2,7 @@
 
 const { program } = require('commander');
 const path = require('path');
+const { emptyDirSync } = require('fs-extra');
 
 /**
  * Set consumer project/repo path.
@@ -39,6 +40,11 @@ program
     '-o, --outputDir <path>',
     'default directory where pf-docs places all output',
     path.join(_PF_DOCS_CONTEXT_PWD, '/pf-docs')
+  )
+  .option(
+    '-m, --match <glob>',
+    'match markdownfiles',
+    path.join(_PF_DOCS_CONTEXT_PWD, '/**/__docs__/**/*.md')
   );
 
 /**
@@ -47,12 +53,7 @@ program
 program
   .command('start')
   .option('-p, --port <port>', 'set webpack port', _PF_DOCS_PORT_OPT)
-  .option(
-    '-m, --match <glob>',
-    'match markdownfiles',
-    path.join(_PF_DOCS_CONTEXT_PWD, '/**/__docs__/**/*.md')
-  )
-  .description('generates source files, and runs webpack-dev-server')
+  .description('generates components, watches files, and runs webpack-dev-server')
   .action(localOptions => {
     const options = { ...program.opts(), ...localOptions };
 
@@ -60,13 +61,35 @@ program
       delete options.match;
     }
 
-    console.log(options);
+    if (options.outputDir) {
+      emptyDirSync(options.outputDir);
+    }
 
-    // const { commandGenerate } = require('../src/command.generate');
+    const { commandGenerate } = require('../src/command.generate');
     const { commandStart } = require('../src/command.start');
-    //
-    // commandGenerate(options);
+    commandGenerate(options);
     commandStart(options);
+  });
+
+/**
+ * Generate command. Generate PF themed components for bundling.
+ */
+program
+  .command('generate')
+  .description('generates components')
+  .action(localOptions => {
+    const options = { ...program.opts(), ...localOptions };
+
+    if (options.source) {
+      delete options.match;
+    }
+
+    if (options.outputDir) {
+      emptyDirSync(options.outputDir);
+    }
+
+    const { commandGenerate } = require('../src/command.generate');
+    commandGenerate(options);
   });
 
 /**

@@ -1,4 +1,5 @@
 const path = require('path');
+const { removeSync } = require('fs-extra');
 const toVfile = require('to-vfile');
 const unified = require('unified');
 const yaml = require('js-yaml');
@@ -64,6 +65,7 @@ const toReactComponent = ({
       source = frontmatter.source || source;
       const slug = makeSlug(source, frontmatter.section, frontmatter.id);
       outPath = path.join(outputDir, `${slug}.js`);
+      removeSync(outPath);
 
       let sourceRepo = 'patternfly-org';
       if (source.includes('html')) {
@@ -105,6 +107,7 @@ const toReactComponent = ({
         pageData.source = `${source}-demos`;
         pageData.slug = makeSlug(pageData.source, pageData.section, pageData.id);
         outPath = path.join(outputDir, `${pageData.slug}.js`);
+        removeSync(outPath);
       }
       if (frontmatter.title) {
         pageData.title = frontmatter.title;

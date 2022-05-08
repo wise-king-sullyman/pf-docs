@@ -1,12 +1,8 @@
-const { emptyDirSync } = require('fs-extra');
-const { watchMarkdown } = require('./markdown');
+const { setupMarkdown, fileWatch } = require('./markdown');
 
 const commandStart = options => {
-  if (options.outputDir) {
-    emptyDirSync(options.outputDir);
-  }
-
-  watchMarkdown((options.source && require(options.source)) || options.match, {
+  setupMarkdown((options.source && require(options.source)) || options.match, {
+    fileHandler: fileWatch,
     outputDir: options?.outputDir
   });
 };
