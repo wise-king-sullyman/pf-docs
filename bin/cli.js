@@ -21,6 +21,28 @@ const _PF_DOCS_CONTEXT_PWD = (global._PF_DOCS_CONTEXT_PWD = process.cwd());
 const _PF_DOCS_PACKAGE_PWD = (global._PF_DOCS_PACKAGE_PWD = path.join(__dirname, '..'));
 
 /**
+ * Set a consistent output directory.
+ *
+ * @type {string}
+ * @private
+ */
+const _PF_DOCS_OUTPUT_DIR = (global._PF_DOCS_OUTPUT_DIR = path.join(
+  _PF_DOCS_CONTEXT_PWD,
+  '/pf-docs'
+));
+
+/**
+ * Set a consistent webpack base directory.
+ *
+ * @type {string}
+ * @private
+ */
+const _PF_DOCS_WEBPACK_DIR = (global._PF_DOCS_WEBPACK_DIR = path.join(
+  _PF_DOCS_PACKAGE_PWD,
+  '/src/webpack'
+));
+
+/**
  * Declare an empty global for reference, and setting a port configuration in the future.
  *
  * @type {number}
@@ -49,7 +71,7 @@ program
   .option(
     '-o, --outputDir <path>',
     'default directory where pf-docs places all output',
-    path.join(_PF_DOCS_CONTEXT_PWD, '/pf-docs')
+    _PF_DOCS_OUTPUT_DIR
   )
   .option('-p, --port <port>', 'set webpack port', _PF_DOCS_PORT_OPT)
   .option('-s, --source [path]', 'set a markdown file path, with props and markdown globs');

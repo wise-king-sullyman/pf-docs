@@ -14,6 +14,7 @@ const clientConfig = require('./config.client');
 const startWebpack = async ({ css, config, port } = {}) => {
   const webpackConfig = await clientConfig(null, { mode: 'development', port, ...config });
 
+  /*
   const updatedWebpackConfig = {
     ...webpackConfig,
     devServer: {
@@ -24,12 +25,23 @@ const startWebpack = async ({ css, config, port } = {}) => {
   };
 
   const { port: updatedPort } = updatedWebpackConfig.devServer;
+
   const server = new WebpackDevServer(
     webpack(updatedWebpackConfig),
     updatedWebpackConfig.devServer
   );
+  */
 
-  server.listen(updatedPort, 'localhost', err => {
+  /*
+   * object { allowedHosts?, bonjour?, client?, compress?, devMiddleware?, headers?, historyApiFallback?,
+   * host?, hot?, http2?, https?, ipc?, liveReload?, magicHtml?, onAfterSetupMiddleware?,
+   * onBeforeSetupMiddleware?, onListening?, open?, port?, proxy?, server?, setupExitSignals?,
+   * setupMiddlewares?, static?, watchFiles?, webSocketServer? }
+   */
+
+  const server = new WebpackDevServer({}, webpack(webpackConfig));
+
+  server.listen(port, 'localhost', err => {
     if (err) {
       console.error(err);
     }
