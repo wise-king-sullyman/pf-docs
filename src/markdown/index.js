@@ -1,8 +1,8 @@
 const chokidar = require('chokidar');
 const { sync } = require('glob');
-const { sourcePropsFile } = require('./sourcePropsFile');
-const { sourceMarkdownFile } = require('./sourceMarkdownFile');
-const { writeIndexFile } = require('./writeIndexFile');
+const { sourcePropsFile } = require('./parsers/sourcePropsFile');
+const { sourceMarkdownFile } = require('./parsers/sourceMarkdownFile');
+const { writeIndexFile } = require('./parsers/writeIndexFile');
 
 /**
  * Match files, apply callback on match.
