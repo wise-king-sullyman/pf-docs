@@ -3,7 +3,7 @@ import { PageSection, Title, PageSectionVariants, BackToTop } from '@patternfly/
 import { css } from '@patternfly/react-styles';
 import ExternalLinkAltIcon from '@patternfly/react-icons/dist/esm/icons/external-link-alt-icon';
 import { Router, useLocation } from '@reach/router';
-import { CSSVariables, PropsTable, TableOfContents, Link, AutoLinkHeader, InlineAlert } from '../app/components';
+import { CSSVariables, PropsTable, TableOfContents, Link, AutoLinkHeader, InlineAlert } from '../';
 import { capitalize, getTitle, slugger, trackEvent } from '../../helpers';
 import './mdx.css';
 
@@ -22,6 +22,7 @@ const MDXChildTemplate = ({
     katacodaBroken,
     katacodaLayout
   } = Component.getPageData();
+
   const cssVarsTitle = cssPrefix.length > 0 && 'CSS variables';
   const propsTitle = propComponents.length > 0 && 'Props';
   if (propsTitle && !toc.find(item => item.text === propsTitle)) {
