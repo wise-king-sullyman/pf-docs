@@ -1,7 +1,7 @@
 import React from 'react';
 import { Nav, NavList, NavExpandable, PageContextConsumer, capitalize } from '@patternfly/react-core';
 import { css } from '@patternfly/react-styles';
-import globalBreakpointXl from "@patternfly/react-tokens/dist/esm/global_breakpoint_xl";
+import globalBreakpointXl from '@patternfly/react-tokens/dist/esm/global_breakpoint_xl';
 import { Location } from '@reach/router';
 import { Link } from '../link/link';
 import { slugger, trackEvent } from '../../helpers';
@@ -11,26 +11,23 @@ const NavItem = ({ text, href }) => {
   const isMobileView = window.innerWidth < Number.parseInt(globalBreakpointXl.value, 10);
   return (
     <PageContextConsumer key={href + text}>
-      {({onNavToggle}) => (
+      {({ onNavToggle }) => (
         <li key={href + text} className="pf-c-nav__item" onClick={() => isMobileView && onNavToggle()}>
           <Link
             to={href}
-            getProps={({ isCurrent, href, location }) => {
+            getProps={({ isCurrent, href: scopedHref, location }) => {
               const { pathname } = location;
               return {
-                className: css(
-                  'pf-c-nav__link',
-                  (isCurrent || pathname.startsWith(href + '/')) && 'pf-m-current'
-                )
-              }}
-            }
+                className: css('pf-c-nav__link', (isCurrent || pathname.startsWith(`${scopedHref}/`)) && 'pf-m-current')
+              };
+            }}
           >
             {text}
           </Link>
         </li>
       )}
     </PageContextConsumer>
-  )
+  );
 };
 
 export const SideNav = ({ groupedRoutes = {}, navItems = [] }) => {
@@ -52,8 +49,8 @@ export const SideNav = ({ groupedRoutes = {}, navItems = [] }) => {
   return (
     <Nav aria-label="Side Nav" theme="light">
       <NavList className="ws-side-nav-list">
-        {navItems.map(({ section, text, href }) => section
-          ? (
+        {navItems.map(({ section, text, href }) =>
+          section ? (
             <Location key={section}>
               {({ location }) => {
                 const isActive = location.pathname.startsWith(`${process.env.pathPrefix}/${slugger(section)}`);
@@ -63,7 +60,7 @@ export const SideNav = ({ groupedRoutes = {}, navItems = [] }) => {
                     isActive={isActive}
                     isExpanded={isActive}
                     className="ws-side-nav-group"
-                    onClick={(event) => {
+                    onClick={event => {
                       // Don't trigger for bubbled events from NavItems
                       if (!event.target.href) {
                         const isExpanded = event.currentTarget.classList.contains('pf-m-expanded');
@@ -73,20 +70,20 @@ export const SideNav = ({ groupedRoutes = {}, navItems = [] }) => {
                     }}
                   >
                     {Object.entries(groupedRoutes[section] || {})
-                      .filter(([, { hideNavItem }]) => !Boolean(hideNavItem))
+                      .filter(([, { hideNavItem }]) => !hideNavItem)
                       .map(([id, { slug }]) => ({ text: id, href: slug }))
                       .sort(({ text: text1 }, { text: text2 }) => text1.localeCompare(text2))
-                      .map(NavItem)
-                    }
+                      .map(NavItem)}
                   </NavExpandable>
                 );
               }}
             </Location>
-          )
-          : NavItem({
+          ) : (
+            NavItem({
               text: text || capitalize(href.replace(/\//g, '').replace(/-/g, ' ')),
-              href: href
+              href
             })
+          )
         )}
       </NavList>
     </Nav>

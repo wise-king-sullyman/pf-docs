@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   PageHeaderTools,
@@ -9,96 +9,69 @@ import {
   DropdownItem,
   DropdownGroup,
   Divider
-} from "@patternfly/react-core";
-import SearchIcon from "@patternfly/react-icons/dist/esm/icons/search-icon";
-import ExternalLinkAltIcon from "@patternfly/react-icons/dist/esm/icons/external-link-alt-icon";
-import TimesIcon from "@patternfly/react-icons/dist/esm/icons/times-icon";
-import GithubIcon from "@patternfly/react-icons/dist/esm/icons/github-icon";
+} from '@patternfly/react-core';
+import SearchIcon from '@patternfly/react-icons/dist/esm/icons/search-icon';
+import ExternalLinkAltIcon from '@patternfly/react-icons/dist/esm/icons/external-link-alt-icon';
+import TimesIcon from '@patternfly/react-icons/dist/esm/icons/times-icon';
+import GithubIcon from '@patternfly/react-icons/dist/esm/icons/github-icon';
 
-export const HeaderTools = ({
-  versions,
-  hasVersionSwitcher,
-  hasSearch
-}) => {
+export const HeaderTools = ({ versions, hasVersionSwitcher, hasSearch }) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [isSearchExpanded, setSearchExpanded] = useState(false);
 
-  const versionReleases = versions?.Releases||[];
+  const versionReleases = versions?.Releases || [];
   const latestVersion = versionReleases.find(({ latest }) => latest);
 
-  const getDropdownItem = (version) => (
+  const getDropdownItem = version => (
     <DropdownItem
       key={version.name}
-      component={
-        <a href={version.latest ? "/v4" : `/${version.name}`}>
-          {`Release ${version.name}`}
-        </a>
-      }
+      component={<a href={version.latest ? '/v4' : `/${version.name}`}>{`Release ${version.name}`}</a>}
     />
   );
 
   const searchRef = React.useRef();
 
   useEffect(() => {
-    const handleSearchHotkeys = (event) => {
+    const handleSearchHotkeys = event => {
       const tagName = event.target.tagName.toLowerCase();
-      const isContentEditable = event.target.contentEditable === "true";
+      const isContentEditable = event.target.contentEditable === 'true';
       if (
-        (event.code === "Slash" || event.code === "KeyS") &&
-        tagName !== "input" &&
-        tagName !== "textarea" &&
+        (event.code === 'Slash' || event.code === 'KeyS') &&
+        tagName !== 'input' &&
+        tagName !== 'textarea' &&
         !isContentEditable
       ) {
         setSearchExpanded(true);
         setTimeout(() => searchRef.current && searchRef.current.focus(), 0);
-      } else if (
-        event.code === "Escape" &&
-        event.target === searchRef.current
-      ) {
+      } else if (event.code === 'Escape' && event.target === searchRef.current) {
         setSearchExpanded(false);
       }
     };
-    window.addEventListener("keyup", handleSearchHotkeys);
-    return () => window.removeEventListener("keyup", handleSearchHotkeys);
+    window.addEventListener('keyup', handleSearchHotkeys);
+    return () => window.removeEventListener('keyup', handleSearchHotkeys);
   }, []);
 
   return (
     <PageHeaderTools>
       {hasSearch && (
-        <PageHeaderToolsItem
-          id="ws-global-search-wrapper"
-          className={isSearchExpanded ? "" : "ws-hide-search-input"}
-        >
-          <TextInput
-            id="ws-global-search"
-            ref={searchRef}
-            placeholder="Search"
-          />
+        <PageHeaderToolsItem id="ws-global-search-wrapper" className={isSearchExpanded ? '' : 'ws-hide-search-input'}>
+          <TextInput id="ws-global-search" ref={searchRef} placeholder="Search" />
           {isSearchExpanded && <SearchIcon className="global-search-icon" />}
         </PageHeaderToolsItem>
       )}
       {hasSearch && (
         <Button
-          aria-label={`${
-            isSearchExpanded ? "Collapse" : "Expand"
-          } search input`}
+          aria-label={`${isSearchExpanded ? 'Collapse' : 'Expand'} search input`}
           variant="plain"
           className="ws-toggle-search"
           onClick={() => {
             setSearchExpanded(!isSearchExpanded);
             if (!isSearchExpanded) {
-              setTimeout(
-                () => searchRef.current && searchRef.current.focus(),
-                0
-              );
+              setTimeout(() => searchRef.current && searchRef.current.focus(), 0);
             }
           }}
         >
-          {isSearchExpanded ? (
-            <TimesIcon />
-          ) : (
-            <SearchIcon className="global-search-icon" />
-          )}
+          {isSearchExpanded ? <TimesIcon /> : <SearchIcon className="global-search-icon" />}
         </Button>
       )}
       <PageHeaderToolsItem>
@@ -120,9 +93,7 @@ export const HeaderTools = ({
             onSelect={() => setDropdownOpen(!isDropdownOpen)}
             toggle={
               <DropdownToggle
-                className={`ws-org-version-toggle${
-                  isDropdownOpen ? "-expanded" : ""
-                }`}
+                className={`ws-org-version-toggle${isDropdownOpen ? '-expanded' : ''}`}
                 onToggle={() => setDropdownOpen(!isDropdownOpen)}
               >
                 Release {latestVersion.name}
@@ -135,7 +106,7 @@ export const HeaderTools = ({
               </DropdownGroup>,
               <DropdownGroup key="Previous" label="Previous releases">
                 {versionReleases
-                  .filter((version) => !version.hidden && !version.latest)
+                  .filter(version => !version.hidden && !version.latest)
                   .slice(0, 3)
                   .map(getDropdownItem)}
               </DropdownGroup>,
@@ -148,7 +119,7 @@ export const HeaderTools = ({
               >
                 PatternFly 3
                 <ExternalLinkAltIcon />
-              </DropdownItem>,
+              </DropdownItem>
             ]}
           />
         </PageHeaderToolsItem>

@@ -15,13 +15,7 @@ const Promiseany = (Promise.any || function ($) {
 }).bind(Promise);
  */
 
-export const Link = ({
-  href,
-  to,
-  onMouseOver = () => {},
-  onClick,
-  ...props
-}) => {
+export const Link = ({ href, to, onMouseOver = () => {}, onClick, ...props }) => {
   let preloadPromise;
   let url = href || to || '';
 
@@ -41,7 +35,8 @@ export const Link = ({
 
   if (url.includes('//') || url.startsWith('#')) {
     return <a href={url} onClick={onClick} {...props} />;
-  } else if (url.startsWith('/')) {
+  }
+  if (url.startsWith('/')) {
     url = `${process.env.pathPrefix}/${url.substr(1)}`;
 
     if (!process.env.PRERENDER) {
@@ -54,13 +49,11 @@ export const Link = ({
         };
         // Wait up to an extra 500ms on click before showing 'Loading...'
         props.onClick = ev => {
-          if (!(ev.ctrlKey || ev.metaKey)) { // avoid disallowing cmnd/ctrl+click opening in new tab
+          if (!(ev.ctrlKey || ev.metaKey)) {
+            // avoid disallowing cmnd/ctrl+click opening in new tab
             ev.preventDefault();
             if (typeof window !== 'undefined' && url !== location.pathname) {
-              Promise.any([
-                preloadPromise,
-                new Promise(res => setTimeout(res, 500))
-              ]).then(() => navigate(url));
+              Promise.any([preloadPromise, new Promise(res => setTimeout(res, 500))]).then(() => navigate(url));
             }
           }
         };
@@ -68,4 +61,4 @@ export const Link = ({
     }
   }
   return <ReachLink to={url} {...props} />;
-}
+};

@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import staticVersions from 'theme-patternfly-org/versions.json';
-import {
-  Page,
-  PageHeader,
-  PageSidebar,
-  Brand,
-  SkipToContent
-} from '@patternfly/react-core';
+import { Page, PageHeader, PageSidebar, Brand, SkipToContent } from '@patternfly/react-core';
 import { SideNav } from '../sideNav/sideNav';
 import { HeaderTools } from '../headerTools/headerTools';
+import { TopNav } from '../topNav/topNav';
+import { GdprBanner } from '../gdprBanner/gdprBanner';
 import { attachDocSearch } from '../../helpers';
 import logo from '../../assets/images/logo.svg';
 
-// FixMe: confusing syntax where "staticVersions" is pulled in vs a dynamic pull w/ fetch like it would be updated on-the-fly?
+// FixMe: confusing syntax where "staticVersions" is pulled in as a compiled resource but also as a dynamic pull w/ fetch...
+// ... like it would be updated on-the-fly?
 export const SideNavLayout = ({
   children,
   groupedRoutes,
@@ -56,10 +53,11 @@ export const SideNavLayout = ({
   const Header = (
     <PageHeader
       className="ws-page-header"
-      headerTools={(algolia || hasVersionSwitcher) && <HeaderTools
-        versions={versions}
-        hasSearch={algolia}
-        hasVersionSwitcher={hasVersionSwitcher} />}
+      headerTools={
+        (algolia || hasVersionSwitcher) && (
+          <HeaderTools versions={versions} hasSearch={algolia} hasVersionSwitcher={hasVersionSwitcher} />
+        )
+      }
       logo={prnum ? `PR #${prnum}` : <Brand src={logo} alt="Patternfly Logo" />}
       logoProps={{ href: prurl || pathPrefix || '/' }}
       showNavToggle
@@ -69,9 +67,7 @@ export const SideNavLayout = ({
 
   return (
     <React.Fragment>
-      <div id="ws-page-banners">
-        {hasGdprBanner && <GdprBanner />}
-      </div>
+      <div id="ws-page-banners">{hasGdprBanner && <GdprBanner />}</div>
       <Page
         id="ws-page"
         mainContainerId="ws-page-main"

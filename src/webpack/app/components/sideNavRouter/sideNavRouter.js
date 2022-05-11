@@ -5,40 +5,33 @@ import { MDXTemplate } from '../mdx/mdx';
 import { routes, groupedRoutes } from '../../routes';
 import { SideNavLayout } from '../sideNavLayout/sideNavLayout';
 
-const PATH_PREFIX = process.env.pathPrefix;
-
-export const SideNavRouter = (pathPrefix = PATH_PREFIX) => {
+export const SideNavRouter = (pathPrefix = process.env.pathPrefix) => {
   const pathname = useLocation().pathname.replace(pathPrefix, '');
   const navOpen = !routes[pathname] || !routes[pathname].katacodaLayout;
 
   return (
-    <SideNavLayout groupedRoutes={groupedRoutes} navOpen={navOpen} >
+    <SideNavLayout groupedRoutes={groupedRoutes} navOpen={navOpen}>
       <Router id="ws-page-content-router">
-        {Object.entries(routes)
-          .map(([path, { Component, title, sources, katacodaLayout }]) => Component
-            ? <AppRoute
-                key={path}
-                path={path}
-                default={path === '/404'}
-                child={<Component />}
-                katacodaLayout={katacodaLayout}
-                title={title}
-              />
-            : <AppRoute
-                key={path}
-                path={path + '/*'}
-                child={
-                  <MDXTemplate
-                    path={path}
-                    title={title}
-                    sources={sources}
-                  />
-                }
-                katacodaLayout={katacodaLayout}
-                title={title}
-              />
+        {Object.entries(routes).map(([path, { Component, title, sources, katacodaLayout }]) =>
+          Component ? (
+            <AppRoute
+              key={path}
+              path={path}
+              default={path === '/404'}
+              child={<Component />}
+              katacodaLayout={katacodaLayout}
+              title={title}
+            />
+          ) : (
+            <AppRoute
+              key={path}
+              path={`${path}/*`}
+              child={<MDXTemplate path={path} title={title} sources={sources} />}
+              katacodaLayout={katacodaLayout}
+              title={title}
+            />
           )
-        }
+        )}
       </Router>
     </SideNavLayout>
   );

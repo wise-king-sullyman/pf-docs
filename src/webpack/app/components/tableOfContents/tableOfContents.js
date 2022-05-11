@@ -8,28 +8,28 @@ export const TableOfContents = ({ items }) => {
   const [width, setWidth] = React.useState(window.innerWidth);
   const updateWidth = () => {
     const { innerWidth } = window;
-    innerWidth !== width && setWidth(innerWidth);
-  }
+    if (innerWidth !== width) {
+      setWidth(innerWidth);
+    }
+  };
 
-  const renderItem = (item, index) => {
-    return Array.isArray(item)
-      ? (
-        <JumpLinksList key={index} className="ws-toc-sublist">
-          {item.map(renderItem)}
-        </JumpLinksList>
-      ) : (
-        <JumpLinksItem
-          key={item.id}
-          href={`#${item.id}`}
-          className="ws-toc-item"
-          onKeyDown={updateWidth}
-          onMouseDown={updateWidth}
-          onClick={() => trackEvent('jump_link_click', 'click_event', item.id.toUpperCase())
-        }>
-          {item.text}
-        </JumpLinksItem>
-      )
-  }
+  const renderItem = (item, index) =>
+    Array.isArray(item) ? (
+      <JumpLinksList key={index} className="ws-toc-sublist">
+        {item.map(renderItem)}
+      </JumpLinksList>
+    ) : (
+      <JumpLinksItem
+        key={item.id}
+        href={`#${item.id}`}
+        className="ws-toc-item"
+        onKeyDown={updateWidth}
+        onMouseDown={updateWidth}
+        onClick={() => trackEvent('jump_link_click', 'click_event', item.id.toUpperCase())}
+      >
+        {item.text}
+      </JumpLinksItem>
+    );
 
   return (
     <JumpLinks
@@ -43,4 +43,4 @@ export const TableOfContents = ({ items }) => {
       {items.map(renderItem)}
     </JumpLinks>
   );
-}
+};

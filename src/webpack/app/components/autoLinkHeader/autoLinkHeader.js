@@ -13,16 +13,9 @@ const sizes = {
   h4: 'lg',
   h5: 'md',
   h6: 'sm'
-}
+};
 
-export const AutoLinkHeader = ({
-  id,
-  size,
-  headingLevel,
-  children,
-  metaText,
-  className
-}) => {
+export const AutoLinkHeader = ({ id, size, headingLevel, children, metaText, className }) => {
   const slug = id || slugger(children);
 
   return (
@@ -38,5 +31,5 @@ export const AutoLinkHeader = ({
       </Link>
       {children} {metaText}
     </Title>
-  )
+  );
 };

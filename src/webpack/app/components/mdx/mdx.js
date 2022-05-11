@@ -3,16 +3,16 @@ import { PageSection, Title, PageSectionVariants, BackToTop } from '@patternfly/
 import { css } from '@patternfly/react-styles';
 import ExternalLinkAltIcon from '@patternfly/react-icons/dist/esm/icons/external-link-alt-icon';
 import { Router, useLocation } from '@reach/router';
-import { CSSVariables, PropsTable, TableOfContents, Link, AutoLinkHeader, InlineAlert } from '../';
+import { CSSVariables } from '../cssVariables/cssVariables';
+import { PropsTable } from '../propsTable/propsTable';
+import { TableOfContents } from '../tableOfContents/tableOfContents';
+import { Link } from '../link/link';
+import { AutoLinkHeader } from '../autoLinkHeader/autoLinkHeader';
+import { InlineAlert } from '../inlineAlert/inlineAlert';
 import { capitalize, getTitle, slugger, trackEvent } from '../../helpers';
 import './mdx.css';
 
-const MDXChildTemplate = ({
-  Component,
-  source,
-  toc = [],
-  index = 0
-}) => {
+const MDXChildTemplate = ({ Component, source, toc = [], index = 0 }) => {
   const {
     propComponents = [],
     sourceLink,
@@ -38,30 +38,34 @@ const MDXChildTemplate = ({
     const ensureID = tocItem => {
       if (Array.isArray(tocItem)) {
         tocItem.forEach(ensureID);
+      } else if (!tocItem.id) {
+        tocItem.id = slugger(tocItem.text);
       }
-      else if (!tocItem.id) {
-        tocItem.id = slugger(tocItem.text)
-      }
-    }
+    };
     ensureID(toc);
   }
   const InlineAlerts = (
     <React.Fragment>
-      {optIn && (
-        <InlineAlert title="Opt-in feature">
-          {optIn}
-        </InlineAlert>
-      )}
+      {optIn && <InlineAlert title="Opt-in feature">{optIn}</InlineAlert>}
       {beta && (
         <InlineAlert title="Beta feature">
-          This Beta component is currently under review and is still open for further evolution. It is available for use in product.
-          Beta components are considered for promotion on a quarterly basis. Please join in and give us your feedback or submit any questions on the <a href="https://forum.patternfly.org/">PatternFly forum</a> or via <a href="//slack.patternfly.org/" target="_blank" rel="noopener noreferrer">Slack</a>.
-          Learn more about Beta components <a href="https://github.com/patternfly/patternfly-org/tree/main/beta-component-promotion">here</a>.
+          This Beta component is currently under review and is still open for further evolution. It is available for use
+          in product. Beta components are considered for promotion on a quarterly basis. Please join in and give us your
+          feedback or submit any questions on the <a href="https://forum.patternfly.org/">PatternFly forum</a> or via{' '}
+          <a href="//slack.patternfly.org/" target="_blank" rel="noopener noreferrer">
+            Slack
+          </a>
+          . Learn more about Beta components{' '}
+          <a href="https://github.com/patternfly/patternfly-org/tree/main/beta-component-promotion">here</a>.
         </InlineAlert>
       )}
       {katacodaBroken && (
         <InlineAlert variant="warning" title="Down for maintenance">
-          The embedded version of our tutorials are broken, but you can still access our tutorials on <a href="https://www.katacoda.com/patternfly">Katacoda.com <ExternalLinkAltIcon /></a>.
+          The embedded version of our tutorials are broken, but you can still access our tutorials on{' '}
+          <a href="https://www.katacoda.com/patternfly">
+            Katacoda.com <ExternalLinkAltIcon />
+          </a>
+          .
         </InlineAlert>
       )}
     </React.Fragment>
@@ -69,11 +73,9 @@ const MDXChildTemplate = ({
   // Create dynamic component for @reach/router
   const ChildComponent = () => (
     <div className="pf-u-display-flex ws-mdx-child-template">
-      {toc.length > 1 && (
-        <TableOfContents items={toc} />
-      )}
-      <div className={katacodaLayout? "ws-mdx-content-katacoda" : "ws-mdx-content"}>
-        <div className={katacodaLayout ? "" : "ws-mdx-content-content"}>
+      {toc.length > 1 && <TableOfContents items={toc} />}
+      <div className={katacodaLayout ? 'ws-mdx-content-katacoda' : 'ws-mdx-content'}>
+        <div className={katacodaLayout ? '' : 'ws-mdx-content-content'}>
           {InlineAlerts}
           <Component />
           {propsTitle && (
@@ -102,7 +104,14 @@ const MDXChildTemplate = ({
           {!katacodaLayout && sourceLink && (
             <React.Fragment>
               <br />
-              <a href={sourceLink} target="_blank" onClick={() => trackEvent('view_source_click', 'click_event', source.toUpperCase())}>View source on GitHub</a>
+              <a
+                href={sourceLink}
+                target="_blank"
+                onClick={() => trackEvent('view_source_click', 'click_event', source.toUpperCase())}
+                rel="noreferrer"
+              >
+                View source on GitHub
+              </a>
             </React.Fragment>
           )}
         </div>
@@ -111,13 +120,9 @@ const MDXChildTemplate = ({
   );
   ChildComponent.displayName = `MDXChildTemplate${Component.displayName}`;
   return <ChildComponent key={source} path={source} default={index === 0} />;
-}
+};
 
-export const MDXTemplate = ({
-  title,
-  sources = [],
-  path
-}) => {
+export const MDXTemplate = ({ title, sources = [], path }) => {
   const sourceKeys = sources.map(v => v.source);
   const isSinglePage = sourceKeys.length === 1;
   const { pathname } = useLocation();
@@ -137,9 +142,11 @@ export const MDXTemplate = ({
         className={isSinglePage ? 'ws-docs-title' : ''}
         variant={isSinglePage ? PageSectionVariants.default : PageSectionVariants.light}
       >
-        {!katacodaLayout && <Title size="4xl" headingLevel="h1" id="ws-page-title">
-          {title}
-        </Title>}
+        {!katacodaLayout && (
+          <Title size="4xl" headingLevel="h1" id="ws-page-title">
+            {title}
+          </Title>
+        )}
       </PageSection>
       {!isSinglePage && (
         <PageSection className="pf-m-light pf-u-pb-0 pf-u-pt-0">
@@ -148,14 +155,11 @@ export const MDXTemplate = ({
               {sourceKeys.map((source, index) => (
                 <li
                   key={source}
-                  className={css(
-                    'pf-c-tabs__item',
-                    activeSource === source && 'pf-m-current'
-                  )}
+                  className={css('pf-c-tabs__item', activeSource === source && 'pf-m-current')}
                   // Send clicked tab name for analytics
                   onClick={() => trackEvent('tab_click', 'click_event', source.toUpperCase())}
                 >
-                  <Link className="pf-c-tabs__link" to={`${path}${index === 0 ? '' : '/' + source}`}>
+                  <Link className="pf-c-tabs__link" to={`${path}${index === 0 ? '' : `/${source}`}`}>
                     {capitalize(source.replace('html', 'HTML').replace(/-/g, ' '))}
                   </Link>
                 </li>
@@ -165,22 +169,14 @@ export const MDXTemplate = ({
         </PageSection>
       )}
       <PageSection id="main-content" className={isSinglePage ? 'pf-m-fill' : 'pf-m-fill pf-m-light'}>
-        {isSinglePage && (
-            <MDXChildTemplate {...sources[0]} />
-        )}
+        {isSinglePage && <MDXChildTemplate {...sources[0]} />}
         {!isSinglePage && (
           <Router className="pf-u-h-100" primary={false}>
-            {sources
-              .map((source, index) => {
-                source.index = index;
-                return source;
-              })
-              .map(MDXChildTemplate)
-            }
+            {sources.map((source, index) => ({ ...source, index })).map(MDXChildTemplate)}
           </Router>
         )}
       </PageSection>
       <BackToTop className="ws-back-to-top" scrollableSelector="#ws-page-main" />
     </React.Fragment>
   );
-}
+};
