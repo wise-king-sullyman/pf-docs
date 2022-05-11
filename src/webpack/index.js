@@ -1,5 +1,5 @@
 const WebpackDevServer = require('webpack-dev-server');
-const webpack = require('webpack');
+const Webpack = require('webpack');
 const clientConfig = require('./config.client');
 
 /**
@@ -12,7 +12,12 @@ const clientConfig = require('./config.client');
  * @returns {boolean}
  */
 const startWebpack = async ({ css, config, port } = {}) => {
-  const webpackConfig = await clientConfig(null, { mode: 'development', port, ...config });
+  const webpackConfig = await clientConfig({
+    mode: 'development',
+    port,
+    clientCss: css,
+    ...config
+  });
 
   /*
   const updatedWebpackConfig = {
@@ -39,6 +44,7 @@ const startWebpack = async ({ css, config, port } = {}) => {
    * setupMiddlewares?, static?, watchFiles?, webSocketServer? }
    */
 
+  /*
   const server = new WebpackDevServer({}, webpack(webpackConfig));
 
   server.listen(port, 'localhost', err => {
@@ -46,6 +52,12 @@ const startWebpack = async ({ css, config, port } = {}) => {
       console.error(err);
     }
   });
+   */
+  const compiler = Webpack(webpackConfig);
+  const devServerOptions = { ...webpackConfig.devServer, open: true };
+  const server = new WebpackDevServer(devServerOptions, compiler);
+
+  server.startCallback(() => {});
 
   return true;
 };
