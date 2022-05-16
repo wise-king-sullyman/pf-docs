@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const { merge } = require('webpack-merge');
 const baseConfig = require('./config.base');
-const { _PF_DOCS_CONTEXT_PWD, _PF_DOCS_OUTPUT_DIR } = global;
+const { _PF_DOCS_WEBPACK_DIR, _PF_DOCS_CONTEXT_PWD, _PF_DOCS_OUTPUT_DIR } = global;
 
 /**
  * Merge multiple webpack configurations, minimal defaults and consumer configuration.
@@ -33,10 +33,13 @@ module.exports = ({ clientConfig = {}, clientCss, mode = 'development', port } =
       },
       resolve: {
         alias: {
+          'generated-pf-docs': path.join(_PF_DOCS_WEBPACK_DIR, 'app'),
           'client-styles': getFilePath(clientCss && path.join(_PF_DOCS_CONTEXT_PWD, clientCss)),
           'client-routes': getFilePath(path.join(_PF_DOCS_OUTPUT_DIR, 'index.es.js'))
         },
-        fallback: {}
+        fallback: {
+          // 'pf-docs': require.resolve('pf-docs')
+        }
       }
     },
     clientConfig

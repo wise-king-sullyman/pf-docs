@@ -20,7 +20,8 @@ const writeIndexFile = ({
     `'${route}': {\n    ${Object.entries(pageData)
       .map(([key, val]) => `${key}: ${JSON.stringify(val)}`)
       .concat(
-        `Component: () => import(/* webpackChunkName: "${route.slice(1)}/index" */ '.${route}')`
+        //  `Component: () => import(/* webpackChunkName: "${route.slice(1)}/index" */ '.${route}')`
+        `Component: () => import(/* webpackChunkName: "${route.slice(1)}" */ '.${route}')`
       )
       .join(',\n    ')}\n  }`;
 

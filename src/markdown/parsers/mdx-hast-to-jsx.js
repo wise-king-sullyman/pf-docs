@@ -18,25 +18,19 @@ function toJSX(node, parentNode = {}, options = {}) {
   options.examples = options.examples || {};
   options.indent = options.indent || 2;
 
-  if (node.type === 'root') {
-    return serializeRoot(node, options);
-  }
-
-  if (node.type === 'element') {
-    return serializeElement(node, options, parentNode);
-  }
-
-  // Wraps text nodes inside template string, so that we don't run into escaping issues.
-  if (node.type === 'text') {
-    return serializeText(node, options, parentNode);
-  }
-
-  if (node.type === 'mdxBlockExpression' || node.type === 'mdxSpanExpression') {
-    return serializeMdxExpression(node);
-  }
-
-  if (node.type === 'mdxBlockElement' || node.type === 'mdxSpanElement') {
-    return serializeComponent(node, options, parentNode);
+  switch (node.type) {
+    case 'root':
+      return serializeRoot(node, options);
+    case 'element':
+      return serializeElement(node, options, parentNode);
+    case 'text':
+      return serializeText(node, options, parentNode);
+    case 'mdxBlockExpression':
+    case 'mdxSpanExpression':
+      return serializeMdxExpression(node);
+    case 'mdxBlockElement':
+    case 'mdxSpanElement':
+      return serializeComponent(node, options, parentNode);
   }
 }
 
@@ -46,7 +40,8 @@ function compile(options = {}) {
   };
 }
 
-function serializeRoot(node, options, contextPath = path.join(_PF_DOCS_WEBPACK_DIR, 'app')) {
+// function serializeRoot(node, options, contextPath = path.join(_PF_DOCS_WEBPACK_DIR, 'app')) {
+function serializeRoot(node, options, contextPath = 'generated-pf-docs') {
   const { getOutPath, getRelPath, getPageData, examples } = options;
   const pageData = { ...getPageData() };
   // Save some kb
@@ -95,8 +90,6 @@ function serializeRoot(node, options, contextPath = path.join(_PF_DOCS_WEBPACK_D
 
   const childNodes = groups.rest.map(childNode => toJSX(childNode, node, options)).join('');
 
-  // let res = `import React from 'react';
-  // import { AutoLinkHeader, Example, Link as PatternflyThemeLink } from 'theme-patternfly-org/components';
   let res = `import React from 'react';
 import { AutoLinkHeader } from '${contextPath}/components/autoLinkHeader/autoLinkHeader';
 import { Example } from '${contextPath}/components/example/example';
@@ -118,7 +111,7 @@ const pageData = ${JSON.stringify(pageData, null, 2)};
     }\n};\n`;
   }
 
-  res += `\nconst Component = () => (
+  res += `\nexport const Component = () => (
   <React.Fragment>${childNodes.replace(/\n\s*\n/g, '\n')}
   </React.Fragment>
 );
