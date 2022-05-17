@@ -1,6 +1,6 @@
 {
   "name": "pf-docs",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Patternfly themed documentation in a browser from any repo.",
   "author": "Red Hat",
   "license": "Apache-2.0",
@@ -53,6 +53,9 @@
     ]
   },
   "standard-version": {
+    "skip": {
+      "tag": true
+    },
     "types": [
       {
         "type": "feat",
