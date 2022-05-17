@@ -8,13 +8,14 @@ export class ExampleErrorBoundary extends React.Component {
   state = { error: null, errorInfo: null };
 
   componentDidUpdate(prevProps) {
-    if (prevProps.children !== this.props.children) {
+    const { children } = this.props;
+    if (prevProps.children !== children) {
       this.setState({ error: null, errorInfo: null });
     }
   }
 
   componentDidCatch(error, errorInfo) {
-    errorInfo._suppressLogging = true;
+    errorInfo._suppressLogging = true; // FixMe: no-param-reassign
     this.setState({
       error,
       errorInfo
@@ -22,9 +23,11 @@ export class ExampleErrorBoundary extends React.Component {
   }
 
   render() {
-    if (this.state.errorInfo) {
+    const { error, errorInfo } = this.state;
+    const { children } = this.props;
+    if (errorInfo) {
       return <ExampleError err={error} />;
     }
-    return this.props.children;
+    return children;
   }
 }

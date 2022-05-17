@@ -12,6 +12,7 @@ export const PropTypeWithLinks = ({ type, allPropComponents }) => {
         {type.split(new RegExp(`\\b(${referencedComponentNames.join('|')})\\b`)).map((segment, i) =>
           referencedComponentNames.includes(segment) ? (
             <a
+              role="link"
               key={segment + i}
               onClick={event => {
                 event.preventDefault();

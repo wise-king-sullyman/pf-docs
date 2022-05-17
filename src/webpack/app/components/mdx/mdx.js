@@ -129,7 +129,7 @@ export const MDXTemplate = ({ title, sources = [], path }) => {
   const { katacodaLayout } = sources[0].Component.getPageData();
   let activeSource = pathname.replace(/\/$/, '').split('/').pop();
   if (!sourceKeys.includes(activeSource)) {
-    activeSource = sourceKeys[0];
+    [activeSource] = sourceKeys;
   }
 
   if (typeof document !== 'undefined') {

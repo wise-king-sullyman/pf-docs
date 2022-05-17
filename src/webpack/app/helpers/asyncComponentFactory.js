@@ -13,16 +13,16 @@ export const asyncComponentFactory = (route, pageData) => {
   const { Component } = pageData;
 
   class AsyncComponent extends React.Component {
-    state = {
-      isLoaded: false
-    };
-
     static preload() {
       return Component().then(res => {
         cache[route] = res.default;
         return res.default;
       });
     }
+
+    state = {
+      isLoaded: false
+    };
 
     static getPageData() {
       return cache[route] ? cache[route].pageData : {};

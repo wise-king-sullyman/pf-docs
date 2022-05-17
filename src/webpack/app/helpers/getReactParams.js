@@ -64,7 +64,9 @@ export const getReactParams = (title, code, scope, lang, versions = staticVersio
 
   Object.entries(versions.Releases[0].versions)
     .filter(([pkg]) => updatedCode.includes(pkg))
-    .forEach(([pkg, version]) => (dependencies[pkg] = version));
+    .forEach(([pkg, version]) => {
+      dependencies[pkg] = version;
+    });
 
   return {
     files: {

@@ -52,7 +52,7 @@ const compilerOptions = {
   jsx: 'react',
   esModuleInterop: true
 };
-const pfPackageRegex = /@patternfly\/([^\/]+)\/dist\/.*/;
+const pfPackageRegex = /@patternfly\/([^/]+)\/dist\/.*/;
 
 const compilerHost = ts.createCompilerHost(compilerOptions);
 compilerHost.readFile = fname => {

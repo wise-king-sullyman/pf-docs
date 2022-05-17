@@ -1,5 +1,6 @@
+/*
 import React from 'react';
-// import { Link } from 'theme-patternfly-org/components/link/link';
+import { Link } from 'theme-patternfly-org/components/link/link';
 
 export const DesignGuidelineTemplate = (
   <React.Fragment>
@@ -11,3 +12,4 @@ export const DesignGuidelineTemplate = (
     </a>
   </React.Fragment>
 );
+ */
